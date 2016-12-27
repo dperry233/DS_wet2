@@ -6,14 +6,17 @@
 #define DS_WET2_MAGIHASH_H
 
 #include <exception>
-
-#define INIT_SIZE 5;
-#define FACTOR 2;
+#include <new>
 
 class magiInput : public std::exception {
 };
 
-typedef enum {} HashStatus;
+typedef enum {
+    ALLOCATION_ERROR,
+    INVALID_INPUT,
+    FAILURE,
+    SUCCESS
+} HashStatus;
 
 class Magi {
 private:
@@ -31,6 +34,8 @@ public:
     Magi (const Magi & rhs) : id(rhs.id), level(rhs.level), rank(rhs.rank), beast(rhs.beast) {}
     // TODO: verify that copying means copying rank
 
+    Magi & operator= (const Magi & rhs);
+
     ~Magi () {};
 
     static int getCount ();
@@ -46,46 +51,52 @@ public:
     void setBeast (int beast);
 };
 
+// initialized to 0 and false, respectively
+class hashCell {
+public:
+    Magi * magi;
+    bool deleted;
+
+    explicit hashCell (Magi * magi = 0) : magi(magi), deleted(false) {}
+
+};
+
 class magiHash {
 private:
-    Magi ** array;
-    bool * deleted;
+    const static int init_size = 5;
+    const static int factor = 2;
     int size;
     int content;
+    hashCell * array;
 
-    void increase() {
-        Magi ** oldArray= array;
-        int oldSize=size;
-        size*=FACTOR;
-        array = new Magi*[size];
-        for (int i=0;i<size;++i) {
-            array[i]=0;
+    HashStatus increase () {
+        hashCell * oldArray = array;
+        int oldSize = size;
+        size *= factor;
+        try {
+            array = new hashCell[size];
+        } catch (std::bad_alloc &) {
+            array = oldArray;
+            size = oldSize;
+            return ALLOCATION_ERROR;
         }
-        content=0;
-        for (int i=0;i<oldSize;++i) {
-            if (oldArray[i] != 0 && !deleted[i]) insert(oldArray[i]);
+        content = 0;
+        for (int i = 0; i < oldSize; ++i) {
+            if (oldArray[i].magi != 0 && !oldArray[i].deleted) insert(oldArray[i].magi);
         }
-        // TODO: make new deleted after using it to insert things
         delete[] oldArray;
+        return SUCCESS;
     }
 
 public:
 //    static const Magi * deleted;
-    magiHash() {
-        size=INIT_SIZE;
-        content=0;
-        array = new Magi*[size];
-        deleted = new bool[size];
-        for (int i=0;i<size;++i) {
-            array[i]=0;
-            deleted[i]=false;
-        }
-    }
+    magiHash ();
+
     ~magiHash () {
         delete[] array;
     }
 
-    HashStatus insert (Magi * mage) {
+    HashStatus insert (Magi * magi) {
 
     }
 };

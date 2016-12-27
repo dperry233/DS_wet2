@@ -25,6 +25,5 @@ bool magiHashTests() {
 
 int main() {
     magiHashTests();
-
     return 0;
 }
