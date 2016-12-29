@@ -6,11 +6,6 @@
 
 int Magi::count = 0;
 
-//Magi * hashCell::magi=0;
-//bool hashCell::deleted=false;
-
-// const Magi * magiHash::deleted=(Magi*)-1;
-
 int Magi::getCount () {
     return count;
 }
@@ -40,6 +35,30 @@ Magi & Magi::operator= (const Magi & rhs) {
     level = rhs.level;
     rank = rhs.rank;
     beast = rhs.beast;
+    index = rhs.index;
+    return *this;
+}
+
+int Magi::getIndex () const {
+    return index;
+}
+
+void Magi::setIndex (int index) {
+    Magi::index = index;
 }
 
 magiHash::magiHash () : size(init_size), content(0), array(new hashCell[size]) {}
+
+int magiHash::getSize () const {
+    return size;
+}
+
+int magiHash::getContent () const {
+    return content;
+}
+
+hashCell * magiHash::getArray () const {
+    return array;
+}
+
+// TODO: copy c'tor and assignment operator for hash
