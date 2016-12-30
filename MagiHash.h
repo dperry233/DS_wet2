@@ -7,6 +7,9 @@
 
 #include <exception>
 #include <new>
+#include <iostream>
+
+using namespace std;
 
 class magiInput : public std::exception {
 };
@@ -39,7 +42,6 @@ public:
     }
 
     Magi (const Magi & rhs) : id(rhs.id), level(rhs.level), rank(rhs.rank), beast(rhs.beast), index(rhs.index) {}
-
 
     // TODO: verify that copying means copying rank
 
@@ -149,7 +151,7 @@ public:
     HashStatus getCreature (int id, int * creature) {
         if (0 == creature || id <= 0) return HASH_INVALID_INPUT;
         int index = findMagi(id);
-        if (Magi::unassigned == index) return HASH_FAILURE;
+        if ((Magi::unassigned == index) || (Magi::unassigned == array[index].magi->getBeast())) return HASH_FAILURE;
         *creature = array[index].magi->getBeast();
         return HASH_SUCCESS;
     }
