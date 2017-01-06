@@ -33,7 +33,7 @@ public:
 	int animalAmount;
 	MagicManager(int n,int* levels){
 
-		this->animalZoneUF = new animalUF(n);
+		this->animalZoneUF = new animalUF(n,levels);
 		this->availableMagiTree =  new RAVLTree<Magi, Magi>;
 		this->allMagiTree =  new AVLTree<int, Magi>;
 
@@ -132,11 +132,11 @@ public:
 		if (!allMagiTree->findIfValueExists(magiId)){
 			return MANAGER_FAILURE;
 		}
-		Magi currentMagi=allMagiTree->getValue(magiId);
-		if(availableMagiTree->findIfValueExists(currentMagi)){
+		Magi* currentMagi=allMagiTree->getValue(magiId);
+		if(availableMagiTree->findIfValueExists(*currentMagi)){
 			return MANAGER_FAILURE;
 		}
-		availableMagiTree->removeValue(currentMagi);
+		availableMagiTree->removeValue(*currentMagi);
 		allMagiTree->getValue(magiId)->setBeast(-1);
 
 

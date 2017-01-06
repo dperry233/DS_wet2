@@ -26,8 +26,6 @@ public:
 	int height;	//the height of the nodes subtree
 	int balanceFactor;
 	T* lowestSeniority; //lowest seniority
-	T* leftLowest;//leftNumOfNodes;	//left subtree max rate
-	T* rightLowest;//rightNumOfNodes;	//right subtree max rate
 	RAVLNode* father; //the previous node
 	RAVLNode* rightSon;	//pointer to right son
 	RAVLNode* leftSon; //pointer to left son
@@ -35,31 +33,27 @@ public:
 	/***************** nodes methods  ******************/
 	//an empty node with no data
 	RAVLNode() :
-			key(0), value(0), height(0), balanceFactor(0), lowestSeniority(NULL), leftLowest(
-					NULL), rightLowest(NULL), father(NULL), rightSon(NULL), leftSon(
-			NULL) {
+		key(0), value(0), height(0), balanceFactor(0), lowestSeniority(NULL)
+	, father(NULL), rightSon(NULL), leftSon(NULL) {
 	}
 	;
 	//a node with data and key
 	RAVLNode(Y key, T value) :
-			key(key), value(value), height(0), balanceFactor(0), lowestSeniority(NULL), leftLowest(
-					NULL), rightLowest(NULL), father(NULL), rightSon(NULL), leftSon(
-			NULL) {
+		key(key), value(value), height(0), balanceFactor(0), lowestSeniority(NULL)
+	, father(NULL), rightSon(NULL), leftSon(NULL) {
 	}
 	;
 	//a fully initiated node
 	RAVLNode(Y key, T data, int height, int balanceFactor, int seniority,
 			int leftNumOfNodes, int rightNumOfNodes, RAVLNode* father,
 			RAVLNode* rightSon, RAVLNode* leftSon) : // a "full" node
-			key(key), value(data), height(height), balanceFactor(balanceFactor), lowestSeniority(
-					seniority), leftLowest(leftLowest), rightLowest(rightLowest), father(
-					father), rightSon(rightSon), leftSon(leftSon) {
+				key(key), value(data), height(height), balanceFactor(balanceFactor), lowestSeniority(
+						seniority), father(father), rightSon(rightSon), leftSon(leftSon) {
 	}
 	;
 	RAVLNode(Y key, T data, int balanceFactor, RAVLNode* rightSon, RAVLNode* leftSon, int height) : // a "full" node
-			key(key), value(data), height(height), balanceFactor(balanceFactor), lowestSeniority(
-					NULL), leftLowest(NULL), rightLowest(NULL), father(
-					NULL), rightSon(rightSon), leftSon(leftSon) {
+		key(key), value(data), height(height), balanceFactor(balanceFactor), lowestSeniority(
+				NULL), father(NULL), rightSon(rightSon), leftSon(leftSon) {
 	}
 	;
 	//copy creator
@@ -69,8 +63,6 @@ public:
 		this->height = 0;
 		this->balanceFactor = 0;
 		this->lowestSeniority = node.lowestSeniority;
-		this->leftLowest = node.leftLowest;
-		this->rightLowest = node.rightLowest;
 		this->father = NULL;
 		this->rightSon = NULL;
 		this->leftSon = NULL;
@@ -197,45 +189,44 @@ public:
 
 	//return the minimal seniority among left son right son and the node
 	int getMin(){
-
-		if (rightSon && leftSon) {
-			if (leftLowest <= rightLowest) {
-				return *leftLowest <= *lowestSeniority ? *leftLowest : *lowestSeniority;
-
-				}else{
-					return *rightLowest <= *lowestSeniority ? *rightLowest : *lowestSeniority;
-				}
-			}
-
-
-			if (!rightSon && leftSon) {
-				return *leftLowest <= *lowestSeniority ? *leftLowest : *lowestSeniority;
-			}
-			if (rightSon && !leftSon) {
-				return *rightLowest < *lowestSeniority ? *rightLowest : *lowestSeniority;
-			}
-			return *lowestSeniority;
+//
+//		if (rightSon && leftSon) {
+//			if (leftSon->lowestSeniority <= rightLowest) {
+//				return *leftLowest <= *lowestSeniority ? *leftLowest : *lowestSeniority;
+//
+//			}else{
+//				return *rightLowest <= *lowestSeniority ? *rightLowest : *lowestSeniority;
+//			}
+//		}
+//
+//
+//		if (!rightSon && leftSon) {
+//			return *leftLowest <= *lowestSeniority ? *leftLowest : *lowestSeniority;
+//		}
+//		if (rightSon && !leftSon) {
+//			return *rightLowest < *lowestSeniority ? *rightLowest : *lowestSeniority;
+//		}
+		return *lowestSeniority;
 	};
 
 	void setSeniority(){
-		if (rightSon && leftSon) {
-			rightLowest=rightSon->lowestSeniority;
-			leftLowest=leftSon->lowestSeniority;
-			lowestSeniority=&(this->value);
-		}
-			if (!rightSon && leftSon) {
-				rightLowest=NULL;
-				leftLowest=leftSon->lowestSeniority;
-				lowestSeniority=this->value;			}
-			if (rightSon && !leftSon) {
-				rightLowest=rightSon->lowestSeniority;
-				leftLowest=0;
-				lowestSeniority=rightSon->lowestSeniority+1;			}
-			if (!rightSon && !leftSon){
-				rightLowest=-1;
-				leftLowest=0;
-				lowestSeniority=1;
-			}
+//		int currSen,rightSen,leftSen;
+//
+//
+//		if (rightSon && leftSon) {
+//
+//
+//		}
+//		if (!rightSon && leftSon) {
+//
+//			lowestSeniority=this->value;			}
+//		if (rightSon && !leftSon) {
+//
+//			lowestSeniority=rightSon->lowestSeniority+1;			}
+//		if (!rightSon && !leftSon){
+//			*lowestSeniority= &this->value;
+//
+//		}
 	};
 	void updateNumOfNodes(){
 		RAVLNode<Y,T>* iter=this;
@@ -248,17 +239,17 @@ public:
 	};
 	bool operator==(RAVLNode<Y,T>* node){
 		if (node->key== this->key){
-		return true;
+			return true;
 		}
 		return false;
 	};
-	 void printNode(){
-		 cout << "key: " ;
-		 this->key;
-		 cout<< " value: " ;
-		 this->value;
-		 cout<<endl;
-	 }
+	void printNode(){
+		cout << "key: " ;
+		this->key;
+		cout<< " value: " ;
+		this->value;
+		cout<<endl;
+	}
 	friend class RAVLTree<Y,T>;
 };
 
