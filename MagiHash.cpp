@@ -39,6 +39,22 @@ Magi & Magi::operator= (const Magi & rhs) {
     return *this;
 }
 
+bool Magi::operator< (const Magi & rhs) const {
+    return ((level < rhs.level) || (level == rhs.level && id < rhs.id));
+}
+
+bool Magi::operator> (const Magi & rhs) const {
+    return rhs < *this;
+}
+
+bool Magi::operator<= (const Magi & rhs) const {
+    return !(rhs < *this);
+}
+
+bool Magi::operator>= (const Magi & rhs) const {
+    return !(*this < rhs);
+}
+
 int Magi::getIndex () const {
     return index;
 }

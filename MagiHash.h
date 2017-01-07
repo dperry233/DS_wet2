@@ -64,6 +64,14 @@ public:
     void setBeast (int beast);
 
     void setIndex (int index);
+
+    bool operator< (const Magi & rhs) const;
+
+    bool operator> (const Magi & rhs) const;
+
+    bool operator<= (const Magi & rhs) const;
+
+    bool operator>= (const Magi & rhs) const;
 };
 
 // initialized to 0 and false, respectively
