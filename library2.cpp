@@ -6,34 +6,34 @@
  */
 
 #include "library2.h"
-#include "TrollManager2.h"
+#include "magicManager.h"
 #include <iostream>
 #include <exception>
 
-void* Init(int n) {
+void* Init(int n,int* levels) {
 	if(n<2){
 		return NULL;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = new TrollManager(n);
+		manager = new MagicManager(n,levels);
 	} catch (std::exception& e) {
 		return NULL;
 	}
 	return manager;
 }
 
-StatusType AddTroll(void* DS, int trollID, int strength) {
-	if (NULL == DS || trollID < 0 || strength < 0) {
+StatusType AddMagizoologist(void *DS, int magiID, int magiLevel) {
+	if (NULL == DS || magiID <= 0 || magiLevel <= 0) {
 		return INVALID_INPUT;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = (TrollManager*) DS;
+		manager = (MagicManager*) DS;
 	} catch (std::exception& e) {
 		return INVALID_INPUT;
 	}
-	ManagerResult result = manager->addTroll(trollID, strength);
+	ManagerResult result = manager->addMagi(magiID,magiLevel);
 	if (result == MANAGER_ALLOCATION_ERROR) {
 		return ALLOCATION_ERROR;
 	}
@@ -49,20 +49,18 @@ StatusType AddTroll(void* DS, int trollID, int strength) {
 	return FAILURE;
 }
 
-StatusType AssignTroll(void* DS, int trollID, int team) {
-	if (NULL == DS || trollID < 0 || team < 0) {
+
+StatusType RemoveMagizoologist(void *DS, int magiID){
+	if (NULL == DS || magiID <= 0 ) {
 		return INVALID_INPUT;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = (TrollManager*) DS;
+		manager = (MagicManager*) DS;
 	} catch (std::exception& e) {
 		return INVALID_INPUT;
 	}
-	if (team >= manager->teamAmount) {
-		return INVALID_INPUT;
-	}
-	ManagerResult result = manager->assignTroll(trollID, team);
+	ManagerResult result = manager->removeMagi(magiID);
 	if (result == MANAGER_ALLOCATION_ERROR) {
 		return ALLOCATION_ERROR;
 	}
@@ -78,20 +76,22 @@ StatusType AssignTroll(void* DS, int trollID, int team) {
 	return FAILURE;
 }
 
-StatusType JoinGroups(void* DS, int team1, int team2) {
-	if (NULL == DS || team1 < 0 || team2 < 0) {
+
+
+StatusType AssignMagizoologistToCreature(void *DS, int creatureID) {
+	if (NULL == DS || creatureID < 0 ) {
 		return INVALID_INPUT;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = (TrollManager*) DS;
+		manager = (MagicManager*) DS;
 	} catch (std::exception& e) {
 		return INVALID_INPUT;
 	}
-	if (team1 >= manager->teamAmount || team2 >= manager->teamAmount) {
+	if (creatureID >= manager->animalAmount) {
 		return INVALID_INPUT;
 	}
-	ManagerResult result = manager->joinGroups(team1, team2);
+	ManagerResult result = manager->assignMagi(creatureID);
 	if (result == MANAGER_ALLOCATION_ERROR) {
 		return ALLOCATION_ERROR;
 	}
@@ -107,17 +107,20 @@ StatusType JoinGroups(void* DS, int team1, int team2) {
 	return FAILURE;
 }
 
-StatusType GetGroup(void* DS, int trollID, int* group) {
-	if (NULL == DS || trollID < 0 || !(group)) {
+StatusType RemoveBarrier(void *DS, int creature1, int creature2) {
+	if (NULL == DS || creature1 < 0 || creature2 < 0) {
 		return INVALID_INPUT;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = (TrollManager*) DS;
+		manager = (MagicManager*) DS;
 	} catch (std::exception& e) {
 		return INVALID_INPUT;
 	}
-	ManagerResult result = manager->getGroup(trollID, group);
+	if (creature1 >= manager->animalAmount || creature2 >= manager->animalAmount) {
+		return INVALID_INPUT;
+	}
+	ManagerResult result = manager->removeBarrier(creature1,creature2);
 	if (result == MANAGER_ALLOCATION_ERROR) {
 		return ALLOCATION_ERROR;
 	}
@@ -133,20 +136,19 @@ StatusType GetGroup(void* DS, int trollID, int* group) {
 	return FAILURE;
 }
 
-StatusType TeamUpgrade(void* DS, int teamID, int factor) {
-	if (NULL == DS || teamID < 0 || factor < 1) {
+
+StatusType ReleaseMagizoologist(void *DS, int magiID) {
+	if (NULL == DS || magiID <= 0) {
 		return INVALID_INPUT;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = (TrollManager*) DS;
+		manager = (MagicManager*) DS;
 	} catch (std::exception& e) {
 		return INVALID_INPUT;
 	}
-	if (teamID >= manager->teamAmount) {
-		return INVALID_INPUT;
-	}
-	ManagerResult result = manager->teamUpgrade(teamID, factor);
+
+	ManagerResult result = manager->releaseMagi(magiID);
 	if (result == MANAGER_ALLOCATION_ERROR) {
 		return ALLOCATION_ERROR;
 	}
@@ -162,20 +164,18 @@ StatusType TeamUpgrade(void* DS, int teamID, int factor) {
 	return FAILURE;
 }
 
-StatusType GetStrongestTroll(void* DS, int groupID, int* troll) {
-	if (NULL == DS || groupID < 0 || !(troll)) {
+
+StatusType GetCreatureOfMagi(void *DS, int magiID, int* creatureID) {
+	if (NULL == DS || magiID <= 0 || !(creatureID)) {
 		return INVALID_INPUT;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = (TrollManager*) DS;
+		manager = (MagicManager*) DS;
 	} catch (std::exception& e) {
 		return INVALID_INPUT;
 	}
-	if (groupID >= manager->teamAmount) {
-		return INVALID_INPUT;
-	}
-	ManagerResult result = manager->getStrongestTroll(groupID, troll);
+	ManagerResult result = manager->getCreatureOfMagi(magiID,creatureID);
 	if (result == MANAGER_ALLOCATION_ERROR) {
 		return ALLOCATION_ERROR;
 	}
@@ -191,17 +191,20 @@ StatusType GetStrongestTroll(void* DS, int groupID, int* troll) {
 	return FAILURE;
 }
 
-StatusType GetNumOfTrollsInRange(void* DS, int min, int max, int* num) {
-	if (NULL == DS || min < 0 || min >= max || !(num)) {
+StatusType AreCreaturesInSameArea(void *DS, int creature1, int creature2,  bool* sameArea) {
+	if (NULL == DS || creature1 < 0 || creature2 < 0 || !(sameArea) ) {
 		return INVALID_INPUT;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = (TrollManager*) DS;
+		manager = (MagicManager*) DS;
 	} catch (std::exception& e) {
 		return INVALID_INPUT;
 	}
-	ManagerResult result = manager->GetNumOfTrollsInRange(min, max, num);
+	if (creature1 >= manager->animalAmount || creature2 >= manager->animalAmount) {
+		return INVALID_INPUT;
+	}
+	ManagerResult result = manager->areCreaturesSameArea(creature1,creature2,sameArea);
 	if (result == MANAGER_ALLOCATION_ERROR) {
 		return ALLOCATION_ERROR;
 	}
@@ -216,14 +219,44 @@ StatusType GetNumOfTrollsInRange(void* DS, int min, int max, int* num) {
 	}
 	return FAILURE;
 }
+
+StatusType GetSizeOfArea(void *DS, int creatureID, int* sizeOfArea) {
+	if (NULL == DS || creatureID < 0  || !(sizeOfArea) ) {
+		return INVALID_INPUT;
+	}
+	MagicManager* manager;
+	try {
+		manager = (MagicManager*) DS;
+	} catch (std::exception& e) {
+		return INVALID_INPUT;
+	}
+	if (creatureID >= manager->animalAmount ) {
+		return INVALID_INPUT;
+	}
+	ManagerResult result = manager->getSizeOfArea(creatureID,sizeOfArea);
+	if (result == MANAGER_ALLOCATION_ERROR) {
+		return ALLOCATION_ERROR;
+	}
+	if (result == MANAGER_FAILURE) {
+		return FAILURE;
+	}
+	if (result == MANAGER_INVALID_INPUT) {
+		return INVALID_INPUT;
+	}
+	if (result == MANAGER_SUCCESS) {
+		return SUCCESS;
+	}
+	return FAILURE;
+}
+
 
 void Quit(void** DS) {
 	if (NULL == DS) {
 		return ;
 	}
-	TrollManager* manager;
+	MagicManager* manager;
 	try {
-		manager = (TrollManager*) *DS;
+		manager = (MagicManager*) *DS;
 	} catch (std::exception& e) {
 		return ;
 	}

@@ -24,21 +24,22 @@ private:
 
 
 public:
-	animalUF* teamsAndGroups;
-	magiHash<Magi>* trollById;
-	AVLTree<Magi, Magi>* availableMagiTree;
-	RAVLTree<Magi, Magi>* workingMagiTree;
-
+	animalUF* animalZoneUF;
+	magiHash* magiIdHash;
+	AVLTree<int, Magi>* allMagiTree;
+	RAVLTree<Magi, Magi>* availableMagiTree;
+	int* levelsArray;
 
 	int animalAmount;
-	MagicManager(int n){
+	MagicManager(int n,int* levels){
 
-		this->teamsAndGroups = new unionFind(n);
-		this->trollTree =  new RAVLTree<troll, troll>;
+		this->animalZoneUF = new animalUF(n,levels);
+		this->availableMagiTree =  new RAVLTree<Magi, Magi>;
+		this->allMagiTree =  new AVLTree<int, Magi>;
 
-		this->trollById = new magiHash<Magi>(n);
+		this->magiIdHash = new magiHash;
 		this->animalAmount=n;
-
+		this->levelsArray= levels;
 	}
 
 
@@ -46,258 +47,171 @@ public:
 
 
 
-	~TrollManager(){
-		delete trollById;
-		delete teamsAndGroups;
-		delete trollTree;
-
+	~MagicManager(){
+		delete magiIdHash;
+		delete animalZoneUF;
+		delete allMagiTree;
+		delete availableMagiTree;
 	}
 
-	ManagerResult addTroll(int id ,int strength){
-		troll tmpTroll(id,strength);
-		if (trollById->doesKeyExists(id)){
-			return MANAGER_FAILURE;
-		}
-		troll newTroll =  troll(id,strength);
-		trollById->insertNode(id,newTroll);
-		trollTree->insertData(newTroll,newTroll);
-		return MANAGER_SUCCESS;
-	}
-
-	ManagerResult assignTroll(int ID, int team){
-		if (!trollById->doesKeyExists(ID)){
-			return MANAGER_FAILURE;
-		}
-		troll t = trollById->getValue(ID);
-		if (t.team == team){
-			return MANAGER_SUCCESS;
-		}
-		if (t.team != NO_TEAM){
-			return MANAGER_FAILURE;
-		}
-		t.team=team;
-		trollById->getValue(ID).team=team;
-		trollTree->getValue(t)->team=team;
-		rTree* group =teamsAndGroups->find(team);
-		if(group->getStrongest()<=t.strength){
-			if(group->getStrongest()<t.strength || group->getWhoIsstrongest()>t.trollId) {
-				group->updateStrongest(t.strength);
-				group->updateWhoIsStrongest(t.trollId);
+	ManagerResult addMagi(int id ,int MagiLevel){
+		if(id<0 || MagiLevel<=0)
+			if (allMagiTree->findIfValueExists(id)){
+				return MANAGER_FAILURE;
 			}
-		}
+		Magi newMagi =  Magi(id,MagiLevel);
+		allMagiTree->insertData(id,newMagi);
+		magiIdHash->insert(allMagiTree->getValue(id));
+		availableMagiTree->insertData(newMagi,newMagi);
+		//consider allocation success checks
 		return MANAGER_SUCCESS;
-
 	}
 
 
-	ManagerResult joinGroups(int teamId1, int teamId2){
+	ManagerResult removeMagi(int id ){
 
-		if( teamId1 >=teamAmount || teamId1<0 || teamId2 >=teamAmount || teamId2<0 ) {
+		if (!allMagiTree->findIfValueExists(id)){
+			return MANAGER_FAILURE;
+		}
+		//insert call to release magi function here
+
+		this->availableMagiTree->removeValue(*allMagiTree->getValue(id));
+
+
+		magiIdHash->eraseMagi(id);
+		allMagiTree->removeValue(id);
+
+		return MANAGER_SUCCESS;
+	}
+
+
+	ManagerResult assignMagi(int creatureId){
+		if( creatureId >=animalAmount || creatureId<0  ) {
 			return MANAGER_INVALID_INPUT;
 		}
+		int levelOfArea=0;
+		//animalZoneUF->getlevelOfArea(creatureId,&levelOfArea);
 
-		if (teamsAndGroups->find(teamId1)==teamsAndGroups->find(teamId2)){
-			return MANAGER_FAILURE;
-		}
-
-		teamsAndGroups->unionTeams(teamId1,teamId2);
-		return MANAGER_SUCCESS;
-
-	}
-
-	ManagerResult getGroup(int trollID, int* group){
-		if (group == NULL){
-			return MANAGER_INVALID_INPUT;
-		}
-		if (!trollById->doesKeyExists(trollID)){
-			return MANAGER_FAILURE;
-		}
-		troll t = trollById->getValue(trollID);
-		if (t.team == NO_TEAM){
-			return MANAGER_FAILURE;
-		}
-		int team= t.team;
-		rTree* root = teamsAndGroups->find(team);
-		*group=(root->getGroup());
-		return MANAGER_SUCCESS;
-	}
-
-
-	void updateArray(troll* array,int i ,int factor){
-
-		while(i>=0){
-
-			array->strength*=(factor);
-			array++;
-			i--;
-
-		}
-
-	}
-
-	void mergeArrays(troll* updated,troll* notUpdated,troll* newArray ,int size){
-		troll* ptr1=updated;
-		troll* ptr2=notUpdated;
-		for (int i=0; i<size ; i++){
-			if ((ptr1)->trollId== NO_TROLL){
-				newArray[i]=*ptr2;
-				ptr2++;
-				continue;
-			}else if((ptr2)->trollId==NO_TROLL){
-				newArray[i]=*ptr1;
-				ptr1++;
-				continue;
-			}
-			if (*ptr1>*ptr2){
-				newArray[i]=*ptr2;
-				ptr2++;
-			}
-			else{
-				newArray[i]=*ptr1;
-				ptr1++;
-			}
-		}
-	}
-
-
-	void redoTree(RAVLNode<troll,troll>* node,troll* array1, int* i, int size) {
-
-		if (!node) {
-			return;
-		}
-
-		redoTree(node->leftSon,array1, i,size);
-
-		node->getData().strength=(array1[*i].strength);
-		node->getData().team=(array1[*i].team);
-		node->getData().trollId=(array1[*i].trollId);
-		node->key=node->value;
-		(*i)++;
-		redoTree(node->rightSon,array1,i ,size);
-	}
-
-
-	void redoHash(Hash<troll>* trolls, troll* array,int size){
-
-		int i=0;
-		while(i<size){
-			if (array[i].trollId == NO_TROLL){
-				i++;
-				continue;
-			}
-			(trolls->getValue(array[i].trollId)).strength=(array[i].strength);
-			i++;
-		}
-
-	}
-
-
-	ManagerResult teamUpgrade(int teamID ,int factor){
-
-
-
-		int size=this->trollTree->size;
-		int i=0,j=0;
-		troll array1[size];
-		troll array2[size];
-		troll array3[size];
-		inorderToArrayIf(trollTree->rootNode,array1,array2,&i,&j,teamID);
-		if(i==0){
-			return MANAGER_SUCCESS;
-		}
-		int strongID=NO_TROLL;
-		int strongStrength=NO_TROLL;
-		if(i>0){
-			if((array1+i-1)!=NULL){
-				if(array1[i-1].trollId!=NO_TROLL){
-					strongID= array1[i-1].trollId;
-					strongStrength= array1[i-1].strength;
-				}
-			}
-		}
-		updateArray(array1,i,factor);
-
-
-		mergeArrays(array1,array2,array3,size);
-		i=0;
-		redoTree(this->trollTree->rootNode,array3,&i,size);
-		redoHash(this->trollById,array1,size);
-
-		rTree* root = teamsAndGroups->find(teamID);
-		strongStrength = strongStrength*factor;
-		if(strongID!=NO_TROLL){
-			if( strongStrength >= root->getStrongest() ){
-				if (strongStrength > root->getStrongest() || strongID < root->getWhoIsstrongest() ){
-					root->updateStrongest(strongStrength);
-					root->updateWhoIsStrongest(strongID);
-				}
-			}
-		}
-
-		return MANAGER_SUCCESS;
-	}
-
-
-
-	void inorderToArrayIf(RAVLNode<troll,troll>* node,troll* array1,troll* array2
-			, int* i,int* j,int team) {
-
-		if (!node) {
-			return;
-		}
-
-		inorderToArrayIf(node->leftSon,array1,array2,i,j,team);
-
-		if(node->getData().team==team){
-			array1[*i]=node->getData();
-			(*i)++;
+		Magi* youngest;//= availableMagiTree->getYoungest(levelOfArea);
+		if(youngest){
+			int youngestId=youngest->getId();
+			availableMagiTree->removeValue(*youngest);
+			(allMagiTree->getValue(youngestId))->setBeast(creatureId);
 		}else{
-			array2[*j]=node->getData();
-			(*j)++;
-		}
-		inorderToArrayIf(node->rightSon,array1,array2,i,j,team);
-	}
-
-
-
-	ManagerResult getStrongestTroll(int group, int* troll){
-		if (troll==NULL){
-			return MANAGER_INVALID_INPUT;
-		}
-		rTree* t = teamsAndGroups->getGroupRoot(group);
-		if(t==NULL){
 			return MANAGER_FAILURE;
 		}
-		if(t->getStrongest()<0){
-			return MANAGER_FAILURE;
-		}
-		*troll=(t->getWhoIsstrongest());
+
+
 		return MANAGER_SUCCESS;
 
+	}
+
+
+	ManagerResult removeBarrier(int creature1, int creature2){
+
+
+
+		if( creature1 >=animalAmount || creature1<0 || creature2 >=animalAmount || creature2<0 ) {
+			return MANAGER_INVALID_INPUT;
+		}
+		bool isSameArea=false;
+		animalZoneUF->sameArea(creature1,creature2,&isSameArea);
+		if (isSameArea){
+			return MANAGER_FAILURE;
+		}
+		animalZoneUF->removeBarrier(creature1,creature2);
+
+		return MANAGER_SUCCESS;
 
 	}
 
-	ManagerResult GetNumOfTrollsInRange( int min, int max, int* num){
-		if (min<0 || min>=max || !num){
+	ManagerResult releaseMagi(int magiId){
+		if(magiId<=0){
 			return MANAGER_INVALID_INPUT;
 		}
-		RAVLNode<troll,troll>* trollMin=this->trollTree->getBiggestSmallerThan(trollTree->rootNode, min);
-		RAVLNode<troll,troll>* trollMax=this->trollTree->getSmallestBiggerThan(trollTree->rootNode, max);
-		if (!trollMin || !trollMax){
-			*num=0;
+		if (!allMagiTree->findIfValueExists(magiId)){
+			return MANAGER_FAILURE;
+		}
+		Magi* currentMagi=allMagiTree->getValue(magiId);
+		if(availableMagiTree->findIfValueExists(*currentMagi)){
+			return MANAGER_FAILURE;
+		}
+		availableMagiTree->removeValue(*currentMagi);
+		allMagiTree->getValue(magiId)->setBeast(-1);
+
+
+
+		return MANAGER_SUCCESS;
+
+	}
+
+
+
+
+
+
+
+
+	ManagerResult getCreatureOfMagi(int MagiID, int* creatureId){
+		if (creatureId == NULL ||MagiID<=0){
+			return MANAGER_INVALID_INPUT;
+		}
+		if(magiIdHash->findMagi(MagiID)==-1){
+			return MANAGER_FAILURE;
+		}
+		int tmpId=-2;
+		magiIdHash->getCreature(MagiID,&tmpId);
+		if(tmpId==-1){
+			return MANAGER_FAILURE;
+		}
+
+
+
+		return MANAGER_SUCCESS;
+	}
+
+
+	ManagerResult areCreaturesSameArea(int creature1, int creature2,bool* SameArea){
+
+
+
+			if( creature1 >=animalAmount || creature1<0 || creature2 >=animalAmount || creature2<0 ) {
+				return MANAGER_INVALID_INPUT;
+			}
+			if(!SameArea){
+				return MANAGER_INVALID_INPUT;
+			}
+			bool isSameArea=false;
+			animalZoneUF->sameArea(creature1,creature2,&isSameArea);
+
+			*SameArea=isSameArea;
+
 			return MANAGER_SUCCESS;
+
 		}
-		int minIndex= trollTree->calcNodeIndex(trollMin);
-		if (trollMin->key.strength>min){
-			minIndex=minIndex-1;
+
+	ManagerResult getSizeOfArea(int creature1,int* SizeOfArea){
+
+
+
+			if( creature1 >=animalAmount || creature1<0 ) {
+				return MANAGER_INVALID_INPUT;
+			}
+			if(!SizeOfArea){
+				return MANAGER_INVALID_INPUT;
+			}
+			int size;
+			 animalZoneUF->getSizeofArea(creature1,&size);
+			 *SizeOfArea=size;
+
+
+
+			return MANAGER_SUCCESS;
+
 		}
-		int maxIndex= trollTree->calcNodeIndex(trollMax);
-		if (trollMax->key.strength<=max){
-			maxIndex=maxIndex+1;
-		}
-		*num=maxIndex-minIndex-1;
-		return MANAGER_SUCCESS;
-	}
+
+
+
 };
 
 
