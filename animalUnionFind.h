@@ -119,6 +119,9 @@ public:
         return UF_SUCCESS;
     }
 
+    ~AnimalUF () {
+        delete[] array;
+    }
 };
 
 #endif //DS_WET2_ANIMALUNIONFIND_H
