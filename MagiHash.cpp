@@ -63,6 +63,14 @@ void Magi::setIndex (int index) {
     Magi::index = index;
 }
 
+bool Magi::operator== (const Magi & rhs) const {
+    return id == rhs.id;
+}
+
+bool Magi::operator!= (const Magi & rhs) const {
+    return !(rhs == *this);
+}
+
 magiHash::magiHash () : size(init_size), content(0), array(new hashCell[size]) {}
 
 int magiHash::getSize () const {

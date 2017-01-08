@@ -55,6 +55,10 @@ public:
 
     int getLevel () const;
 
+    bool operator== (const Magi & rhs) const;
+
+    bool operator!= (const Magi & rhs) const;
+
     int getRank () const;
 
     int getBeast () const;
