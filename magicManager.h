@@ -164,7 +164,7 @@ public:
 		if(tmpId==-1){
 			return MANAGER_FAILURE;
 		}
-
+		*creatureId=tmpId;
 
 
 		return MANAGER_SUCCESS;
