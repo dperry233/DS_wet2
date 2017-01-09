@@ -2,7 +2,7 @@
 // Created by Krumpet on 29-Dec-16.
 //
 
-#include "magiHash.h"
+#include "MagiHash.h"
 #include "animalUnionFind.h"
 
 int Animal::counter = 0;
