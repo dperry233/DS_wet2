@@ -5,7 +5,7 @@
 #include "MagiHash.h"
 #include "animalUnionFind.h"
 
-int Animal::counter = 0;
+//int Animal::counter = 0;
 
 Animal & Animal::operator= (const Animal & rhs) {
     id = rhs.id;

@@ -18,7 +18,7 @@ typedef enum {
 
 class Animal {
 private:
-    static int counter;
+    //static int counter;
     int id;
     int level;
     Magi * owner;
@@ -26,7 +26,7 @@ private:
     int size;
 
 public:
-    Animal () : id(counter++), level(0), owner(0), root(id), size(1) {}
+    Animal () : id(0), level(0), owner(0), root(id), size(1) {}
 
     Animal (const Animal & rhs) : id(rhs.id), level(rhs.level), owner(rhs.owner), root(rhs.root), size(rhs.size) {}
 
@@ -85,6 +85,7 @@ public:
         if ((n <= 0) || (!levels)) throw animalInput();
         array = new Animal[n];
         for (int i = 0; i < n; ++i) {
+            array[i].setId(i);
             array[i].setLevel(levels[i]);
         }
     }
