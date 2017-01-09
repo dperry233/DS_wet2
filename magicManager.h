@@ -90,9 +90,9 @@ public:
 			return MANAGER_INVALID_INPUT;
 		}
 		int levelOfArea=0;
-		//animalZoneUF->getlevelOfArea(creatureId,&levelOfArea);
+		animalZoneUF->getSizeofArea(creatureId,&levelOfArea);
 
-		Magi* youngest;//= availableMagiTree->getYoungest(levelOfArea);
+		Magi* youngest= availableMagiTree->getYoungest(levelOfArea);
 		if(youngest){
 			int youngestId=youngest->getId();
 			availableMagiTree->removeValue(*youngest);
