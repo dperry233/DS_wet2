@@ -137,7 +137,7 @@ public:
 		if(availableMagiTree->findIfValueExists(*currentMagi)){
 			return MANAGER_FAILURE;
 		}
-		availableMagiTree->removeValue(*currentMagi);
+		availableMagiTree->insertData(*currentMagi,*currentMagi);
 		allMagiTree->getValue(magiId)->setBeast(-1);
 
 
