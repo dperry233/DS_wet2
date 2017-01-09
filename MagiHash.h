@@ -76,6 +76,10 @@ public:
     bool operator<= (const Magi & rhs) const;
 
     bool operator>= (const Magi & rhs) const;
+
+    bool isYoungerThan (const Magi & rhs) {
+        return this->rank < rhs.rank;
+    }
 };
 
 // initialized to 0 and false, respectively

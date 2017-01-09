@@ -103,6 +103,14 @@ public:
         return UF_SUCCESS;
     }
 
+    UFStatus getLevelofArea (int id, int * levelOfArea) {
+        if (!isValid(id) || (0 == levelOfArea)) return UF_INVALID_INPUT;
+        int root = find(id);
+        if (notFound == root) return UF_INVALID_INPUT; // shouldn't happen
+        *levelOfArea = array[root].getLevel();
+        return UF_SUCCESS;
+    }
+
     UFStatus removeBarrier (int id1, int id2) {
         if (!isValid(id1) || !isValid(id2)) return UF_INVALID_INPUT;
         int root1 = find(id1);
@@ -112,9 +120,11 @@ public:
         if (array[root1].getSize() >= array[root2].getSize()) { // attach 2 to 1
             array[root2].setRoot(root1);
             array[root1].setSize(array[root1].getSize() + array[root2].getSize());
-        } else { // attach 1 to 2
+            array[root1].setLevel(array[root1].getLevel() + array[root2].getLevel());
+        } else {                                                // attach 1 to 2
             array[root1].setRoot(root2);
             array[root2].setSize(array[root1].getSize() + array[root2].getSize());
+            array[root2].setLevel(array[root2].getLevel() + array[root1].getLevel());
         }
         return UF_SUCCESS;
     }
