@@ -61,7 +61,7 @@ public:
 			}
 		Magi newMagi =  Magi(id,MagiLevel);
 		allMagiTree->insertData(id,newMagi);
-		magiIdHash->insert(allMagiTree->getValue(id));
+		//magiIdHash->insert(allMagiTree->getValue(id));
 		availableMagiTree->insertData(newMagi,newMagi);
 		//consider allocation success checks
 		return MANAGER_SUCCESS;
@@ -97,6 +97,7 @@ public:
 			int youngestId=youngest->getId();
 			availableMagiTree->removeValue(*youngest);
 			(allMagiTree->getValue(youngestId))->setBeast(creatureId);
+			magiIdHash->insert(allMagiTree->getValue(youngestId));
 		}else{
 			return MANAGER_FAILURE;
 		}
