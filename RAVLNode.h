@@ -195,7 +195,7 @@ public:
     };
 
     //return the minimal seniority among left son right son and the node
-    T * getMinWithCriteria (int criteria) {
+    RAVLNode<Y,T> * getMinWithCriteria (int criteria) {
         if (*this < criteria) { // can't go higher, return NULL for no fitting node found
             if (!rightSon) {
                 return NULL;
@@ -206,42 +206,42 @@ public:
         RAVLNode<Y, T> * youngestLeft = NULL;
         if (*this == criteria) { // starting from this, the nodes fit the criteria
             if (!rightSon) {
-                return *(this->value); // this node fits and there are no bigger ones
+                return this; // this node fits and there are no bigger ones
             } else { // this and to the right, are fitting candidates
                 youngestRight = rightSon->getYoungest();
-                return *this < *youngestRight ? &(this->value) : &(youngestRight->value);
+                return *this < *youngestRight ? this : youngestRight;
             }
         }
 
         if (*this > criteria) { // this node fits, its right son fits, and maybe some on it's left fit
             if (!leftSon) { // nothing to the left, check to the right
                 if (!rightSon) { // this leaf is the only one that fits
-                    return *(this->value);
+                    return this;
                 } else { // this, and to the right, are the two options
                     youngestRight = rightSon->getYoungest();
-                    return *this < *youngestRight ? &(this->value) : &(youngestRight->value);
+                    return *this < *youngestRight ? this : youngestRight;
                 }
             } else { // we have a left son
                 youngestLeft = leftSon->getMinWithCriteria(criteria); // recurse to the left to find if anyone fits
                 if (!rightSon) { // this node and maybe someone on the left fit
                     if (!youngestLeft) { // didn't find anyone on left, no right son, only this guy
-                        return &(this->value);
+                        return this;
                     } else { // compare left with this one
-                        return *this < *youngestLeft ? &(this->value) : &(youngestLeft->value);
+                        return *this < *youngestLeft ? this : youngestLeft;
                     }
                 } else { // we have a left and right son
                     youngestRight = rightSon->getYoungest();
                     if (!youngestLeft) { // no matches on the left, compare only this and right
-                        return *this < *youngestRight ? &(this->value) : &(youngestRight->value);
+                        return *this < *youngestRight ? this : youngestRight;
                     } else { // we have three candidates
                         if ((*this < *youngestLeft) && (*this < *youngestRight)) { // this is the youngest that fits
-                            return &(this->value);
+                            return this;
                         } else if ((*youngestLeft < *this) &&
                                    (*youngestLeft < *youngestRight)) { // left guy is youngest
-                            return &(youngestLeft->value);
+                            return youngestLeft;
                         } else if ((*youngestRight < *this) &&
                                    (*youngestRight < *youngestLeft)) { // right guy is youngest
-                            return &(youngestRight->value);
+                            return youngestRight;
                         }
                     }
                 }
@@ -320,15 +320,15 @@ public:
     }
 
     bool operator< (int criteria) {
-        return this->key.level < criteria;
+        return this->key.getLevel() < criteria;
     }
 
     bool operator== (int criteria) {
-        return this->key.level == criteria;
+        return this->key.getLevel() == criteria;
     }
 
     bool operator> (int criteria) {
-        return this->key.level > criteria;
+        return this->key.getLevel() > criteria;
     }
 
     void updateNumOfNodes () {
