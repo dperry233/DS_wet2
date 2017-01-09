@@ -736,6 +736,9 @@ void inOrderToArray (RAVLNode<Y, T> * nNode, T * array, int * i) {
 
 template<class Y, class T>
 T * RAVLTree<Y, T>::findYoungestBiggerThan (int criteria) {
+    if (!rootNode) {
+        return NULL;
+    }
     RAVLNode<Y, T> * youngNode = rootNode->getMinWithCriteria(criteria);
     if (!youngNode) {
         return NULL;
