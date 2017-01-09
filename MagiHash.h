@@ -78,7 +78,7 @@ public:
     bool operator>= (const Magi & rhs) const;
 
     bool isYoungerThan (const Magi & rhs) {
-        return this->rank < rhs.rank;
+        return this->rank > rhs.rank;
     }
 };
 
