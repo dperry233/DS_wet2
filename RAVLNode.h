@@ -204,16 +204,16 @@ public:
 
         RAVLNode<Y, T> * youngestRight = NULL;
         RAVLNode<Y, T> * youngestLeft = NULL;
-        if (*this == criteria) { // starting from this, the nodes fit the criteria // TODO: maybe unite with >
-            if (!rightSon) {
-                return this; // this node fits and there are no bigger ones
-            } else { // this and to the right, are fitting candidates
-                youngestRight = rightSon->getYoungest();
-                return *this < *youngestRight ? this : youngestRight;
-            }
-        }
+//        if (*this == criteria) { // starting from this, the nodes fit the criteria // TODO: maybe unite with >
+//            if (!rightSon) {
+//                return this; // this node fits and there are no bigger ones
+//            } else { // this and to the right, are fitting candidates
+//                youngestRight = rightSon->getYoungest();
+//                return *this < *youngestRight ? this : youngestRight;
+//            }
+//        }
 
-        if (*this > criteria) { // this node fits, its right son fits, and maybe some on it's left fit
+        if ((*this > criteria) || (*this == criteria)) { // this node fits, its right son fits, and maybe some on it's left fit
             if (!leftSon) { // nothing to the left, check to the right
                 if (!rightSon) { // this leaf is the only one that fits
                     return this;
