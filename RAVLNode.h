@@ -204,7 +204,7 @@ public:
 
         RAVLNode<Y, T> * youngestRight = NULL;
         RAVLNode<Y, T> * youngestLeft = NULL;
-        if (*this == criteria) { // starting from this, the nodes fit the criteria
+        if (*this == criteria) { // starting from this, the nodes fit the criteria // TODO: maybe unite with >
             if (!rightSon) {
                 return this; // this node fits and there are no bigger ones
             } else { // this and to the right, are fitting candidates
