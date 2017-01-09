@@ -73,7 +73,7 @@ public:
 		if (!allMagiTree->findIfValueExists(id)){
 			return MANAGER_FAILURE;
 		}
-		//insert call to release magi function here
+		this->releaseMagi(id);
 
 		this->availableMagiTree->removeValue(*allMagiTree->getValue(id));
 
@@ -90,9 +90,9 @@ public:
 			return MANAGER_INVALID_INPUT;
 		}
 		int levelOfArea=0;
-		animalZoneUF->getSizeofArea(creatureId,&levelOfArea);
+		animalZoneUF->getLevelofArea(creatureId,&levelOfArea);
 
-		Magi* youngest= availableMagiTree->getYoungest(levelOfArea);
+		Magi* youngest= availableMagiTree->findYoungestBiggerThan(levelOfArea);
 		if(youngest){
 			int youngestId=youngest->getId();
 			availableMagiTree->removeValue(*youngest);

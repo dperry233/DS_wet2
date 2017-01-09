@@ -9,7 +9,7 @@
 #include <new>
 #include <iostream>
 
-using namespace std;
+//using namespace std;
 
 class magiInput : public std::exception {
 };
@@ -37,7 +37,7 @@ public:
     const static int unassigned = -1;
 
     Magi (int id, int level) : id(id), level(level), rank(count), beast(unassigned), index(unassigned) {
-        if ((id <= 0) || (level <= 0)) throw magiInput();
+      //  if ((id <= 0) || (level <= 0)) throw magiInput();
         ++count;
     }
 
@@ -143,7 +143,7 @@ public:
             i = (i + step) % size;
         } while (hash != i);
         content++;
-        HashStatus increase_result;
+        //HashStatus increase_result;
         if ((float) content / size >= threshold) return resize(INCREASE);
         return HASH_SUCCESS;
     }
