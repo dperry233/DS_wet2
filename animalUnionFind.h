@@ -87,6 +87,7 @@ public:
         for (int i = 0; i < n; ++i) {
             array[i].setId(i);
             array[i].setLevel(levels[i]);
+            array[i].setRoot(i);
         }
     }
 
