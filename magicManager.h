@@ -100,7 +100,7 @@ public:
             int youngestId = youngest->getId();
             availableMagiTree->removeValue(*youngest);
             (allMagiTree->getValue(youngestId))->setBeast(creatureId);
-            magiIdHash->insert(allMagiTree->getValue(youngestId));
+//            magiIdHash->insert(allMagiTree->getValue(youngestId));
         } else {
             return MANAGER_FAILURE;
         }

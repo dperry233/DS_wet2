@@ -180,7 +180,7 @@ public:
     HashStatus getCreature (int id, int * creature) {
         if (0 == creature || id <= 0) return HASH_INVALID_INPUT;
         int index = findMagi(id);
-        if ((Magi::unassigned == index) || (Magi::unassigned == array[index].magi->getBeast())) {
+        if ((Magi::unassigned == index)/* || (Magi::unassigned == array[index].magi->getBeast())*/) {
             *creature = Magi::unassigned;
             return HASH_FAILURE;
         }
