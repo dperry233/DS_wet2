@@ -37,7 +37,7 @@ public:
     const static int unassigned = -1;
 
     Magi (int id, int level) : id(id), level(level), rank(count), beast(unassigned), index(unassigned) {
-      //  if ((id <= 0) || (level <= 0)) throw magiInput();
+        //  if ((id <= 0) || (level <= 0)) throw magiInput();
         ++count;
     }
 
@@ -156,7 +156,10 @@ public:
         int i = hash;
         do {
             if (0 == array[i].magi) return Magi::unassigned;
-            if (id == array[i].magi->getId() && (!array[i].deleted)) {
+//            if (id == array[i].magi->getId() && (!array[i].deleted)) {
+//                return i;
+//            }
+            if (!(array[i].deleted || (id != array[i].magi->getId()))) {
                 return i;
             }
             i = (i + step) % size;
