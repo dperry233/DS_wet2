@@ -343,7 +343,7 @@ public:
         do {
             iter->setSeniority();
             iter = iter->father;
-        } while (iter->father);
+        } while (iter);
 
     };
 
