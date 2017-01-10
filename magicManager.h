@@ -77,8 +77,8 @@ public:
 		if (!allMagiTree->findIfValueExists(id)){
 			return MANAGER_FAILURE;
 		}
-		int index=allMagiTree->getValue(id)->getIndex();
-		this->releaseMagi(index);
+
+		this->releaseMagi(id);
 
 		this->availableMagiTree->removeValue(*allMagiTree->getValue(id));
 
@@ -144,7 +144,7 @@ public:
 		}
 		availableMagiTree->insertData(*currentMagi,*currentMagi);
 		//allMagiTree->getValue(magiId)->setBeast(-1);
-		magiIdHash->eraseMagi(magiId);
+		magiIdHash->eraseMagi(currentMagi->getIndex());
 
 
 		return MANAGER_SUCCESS;
