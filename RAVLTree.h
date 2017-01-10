@@ -749,7 +749,7 @@ T * RAVLTree<Y, T>::findYoungestBiggerThan (int criteria) {
     if (!youngNode) {
         return NULL;
     }
-    return &(rootNode->getMinWithCriteria(criteria)->value);
+    return &(youngNode->value);
 };
 
 

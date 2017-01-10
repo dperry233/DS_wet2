@@ -121,6 +121,10 @@ private:
         return HASH_SUCCESS;
     }
 
+    int gcd (int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
 public:
 //    static const Magi * deleted;
     magiHash ();
@@ -132,20 +136,24 @@ public:
     HashStatus insert (Magi * magi) {
         int hash = (magi->getId()) % size;
         int step = 1 + (magi->getId() % (size - step_const));
+        while (step != 1 && gcd(size, step) != 1) { // fix the step
+            step = (step + 1) % size;
+        }
         int i = hash;
         do {
             if (array[i].deleted || 0 == array[i].magi) {
                 array[i].magi = magi;
                 array[i].magi->setIndex(i);
                 array[i].deleted = false;
-                break;
+                content++;
+                if ((float) content / size >= threshold) return resize(INCREASE);
+                return HASH_SUCCESS;
             }
             i = (i + step) % size;
         } while (hash != i);
-        content++;
         //HashStatus increase_result;
-        if ((float) content / size >= threshold) return resize(INCREASE);
-        return HASH_SUCCESS;
+
+        return HASH_FAILURE;
     }
 
     // returns -1 if magi not found
@@ -153,6 +161,9 @@ public:
         //if (id <= 0) return Magi::unassigned;
         int hash = id % size;
         int step = 1 + (id % (size - step_const));
+        while (step != 1 && gcd(size, step) != 1) { // fix the step
+            step = (step + 1) % size;
+        }
         int i = hash;
         do {
             if (0 == array[i].magi) return Magi::unassigned;
