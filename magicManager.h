@@ -142,8 +142,8 @@ public:
 			return MANAGER_FAILURE;
 		}
 		availableMagiTree->insertData(*currentMagi,*currentMagi);
-		allMagiTree->getValue(magiId)->setBeast(-1);
-
+		//allMagiTree->getValue(magiId)->setBeast(-1);
+		magiIdHash->eraseMagi(magiId);
 
 
 		return MANAGER_SUCCESS;
