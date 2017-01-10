@@ -28,7 +28,7 @@ public:
 	magiHash* magiIdHash;
 	AVLTree<int, Magi>* allMagiTree;
 	RAVLTree<Magi, Magi>* availableMagiTree;
-	int* levelsArray;
+	//int* levelsArray;
 
 	int animalAmount;
 	MagicManager(int n,int* levels){
@@ -39,7 +39,7 @@ public:
 
 		this->magiIdHash = new magiHash;
 		this->animalAmount=n;
-		this->levelsArray= levels;
+		//this->levelsArray= levels;
 	}
 
 

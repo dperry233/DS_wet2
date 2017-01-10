@@ -8,21 +8,21 @@
 //int Animal::counter = 0;
 
 Animal & Animal::operator= (const Animal & rhs) {
-    id = rhs.id;
+    //id = rhs.id;
     level = rhs.level;
-    owner = rhs.owner;
+//    owner = rhs.owner;
     root = rhs.root;
     size = rhs.size;
     return *this;
 }
 
-int Animal::getId () const {
-    return id;
-}
-
-void Animal::setId (int id) {
-    Animal::id = id;
-}
+//int Animal::getId () const {
+//    return id;
+//}
+//
+//void Animal::setId (int id) {
+//    Animal::id = id;
+//}
 
 int Animal::getLevel () const {
     return level;
@@ -32,13 +32,13 @@ void Animal::setLevel (int level) {
     Animal::level = level;
 }
 
-Magi * Animal::getOwner () const {
-    return owner;
-}
-
-void Animal::setOwner (Magi * owner) {
-    Animal::owner = owner;
-}
+//Magi * Animal::getOwner () const {
+//    return owner;
+//}
+//
+//void Animal::setOwner (Magi * owner) {
+//    Animal::owner = owner;
+//}
 
 int Animal::getRoot () const {
     return root;

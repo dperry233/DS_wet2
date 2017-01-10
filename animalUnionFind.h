@@ -19,30 +19,30 @@ typedef enum {
 class Animal {
 private:
     //static int counter;
-    int id;
+    //int id;
     int level;
-    Magi * owner;
+    //Magi * owner;
     int root;
     int size;
 
 public:
-    Animal () : id(0), level(0), owner(0), root(id), size(1) {}
+    Animal () : level(0), /*owner(0),*/ root(0), size(1) {}
 
-    Animal (const Animal & rhs) : id(rhs.id), level(rhs.level), owner(rhs.owner), root(rhs.root), size(rhs.size) {}
+    Animal (const Animal & rhs) : level(rhs.level), /*owner(rhs.owner),*/ root(rhs.root), size(rhs.size) {}
 
     Animal & operator= (const Animal & rhs);
 
-    int getId () const;
-
-    void setId (int id);
+//    int getId () const;
+//
+//    void setId (int id);
 
     int getLevel () const;
 
     void setLevel (int level);
-
-    Magi * getOwner () const;
-
-    void setOwner (Magi * owner);
+//
+//    Magi * getOwner () const;
+//
+//    void setOwner (Magi * owner);
 
     int getRoot () const;
 
@@ -85,7 +85,7 @@ public:
         if ((n <= 0) || (!levels)) throw animalInput();
         array = new Animal[n];
         for (int i = 0; i < n; ++i) {
-            array[i].setId(i);
+            //array[i].setId(i);
             array[i].setLevel(levels[i]);
             array[i].setRoot(i);
         }
