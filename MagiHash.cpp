@@ -35,7 +35,7 @@ Magi & Magi::operator= (const Magi & rhs) {
     level = rhs.level;
     rank = rhs.rank;
     beast = rhs.beast;
-    index = rhs.index;
+//    index = rhs.index;
     return *this;
 }
 
@@ -55,13 +55,13 @@ bool Magi::operator>= (const Magi & rhs) const {
     return !(*this < rhs);
 }
 
-int Magi::getIndex () const {
-    return index;
-}
+//int Magi::getIndex () const {
+//    return index;
+//}
 
-void Magi::setIndex (int index) {
-    Magi::index = index;
-}
+//void Magi::setIndex (int index) {
+//    Magi::index = index;
+//}
 
 bool Magi::operator== (const Magi & rhs) const {
     return id == rhs.id;

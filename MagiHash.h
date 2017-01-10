@@ -32,16 +32,16 @@ private:
     int level;
     int rank;
     int beast;
-    int index;
+    //int index;
 public:
     const static int unassigned = -1;
 
-    Magi (int id, int level) : id(id), level(level), rank(count), beast(unassigned), index(unassigned) {
+    Magi (int id, int level) : id(id), level(level), rank(count), beast(unassigned)/*, index(unassigned)*/ {
         //  if ((id <= 0) || (level <= 0)) throw magiInput();
         ++count;
     }
 
-    Magi (const Magi & rhs) : id(rhs.id), level(rhs.level), rank(rhs.rank), beast(rhs.beast), index(rhs.index) {}
+    Magi (const Magi & rhs) : id(rhs.id), level(rhs.level), rank(rhs.rank), beast(rhs.beast)/*, index(rhs.index)*/ {}
 
     // TODO: verify that copying means copying rank
 
@@ -143,7 +143,7 @@ public:
         do {
             if (array[i].deleted || 0 == array[i].magi) {
                 array[i].magi = magi;
-                array[i].magi->setIndex(i);
+                //array[i].magi->setIndex(i);
                 array[i].deleted = false;
                 content++;
                 if ((float) content / size >= threshold) return resize(INCREASE);
@@ -190,7 +190,7 @@ public:
         if (id <= 0) return HASH_INVALID_INPUT;
         int index = findMagi(id);
         if (Magi::unassigned == index) return HASH_FAILURE;
-        array[index].magi->setIndex(Magi::unassigned);
+//        array[index].magi->setIndex(Magi::unassigned);
         array[index].magi->setBeast(Magi::unassigned);
         array[index].deleted = true;
         content--;
