@@ -77,7 +77,8 @@ public:
 		if (!allMagiTree->findIfValueExists(id)){
 			return MANAGER_FAILURE;
 		}
-		this->releaseMagi(id);
+		int index=allMagiTree->getValue(id)->getIndex();
+		this->releaseMagi(index);
 
 		this->availableMagiTree->removeValue(*allMagiTree->getValue(id));
 
