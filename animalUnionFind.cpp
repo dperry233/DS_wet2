@@ -15,7 +15,7 @@ Animal & Animal::operator= (const Animal & rhs) {
     size = rhs.size;
     return *this;
 }
-
+//comment
 //int Animal::getId () const {
 //    return id;
 //}

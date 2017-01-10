@@ -28,7 +28,7 @@ public:
 	magiHash* magiIdHash;
 	AVLTree<int, Magi>* allMagiTree;
 	RAVLTree<Magi, Magi>* availableMagiTree;
-	//int* levelsArray;
+	//int* levelsArray; //comment
 
 	int animalAmount;
 	MagicManager(int n,int* levels){
