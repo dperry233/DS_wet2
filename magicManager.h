@@ -55,8 +55,12 @@ public:
 	}
 
 	ManagerResult addMagi(int id ,int MagiLevel){
-		if(id<0 || MagiLevel<=0)
-			if (allMagiTree->findIfValueExists(id)){
+		if(id<=0 || MagiLevel<=0){
+			return MANAGER_INVALID_INPUT;
+		}
+
+			if (allMagiTree->findIfValueExists(id))
+			{
 				return MANAGER_FAILURE;
 			}
 		Magi newMagi =  Magi(id,MagiLevel);
