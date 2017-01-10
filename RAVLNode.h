@@ -195,7 +195,7 @@ public:
     };
 
     //return the minimal seniority among left son right son and the node
-    RAVLNode<Y,T> * getMinWithCriteria (int criteria) {
+    RAVLNode<Y, T> * getMinWithCriteria (int criteria) {
         if (*this < criteria) { // can't go higher, return NULL for no fitting node found
             if (!rightSon) {
                 return NULL;
@@ -213,7 +213,8 @@ public:
 //            }
 //        }
 
-        if ((*this > criteria) || (*this == criteria)) { // this node fits, its right son fits, and maybe some on it's left fit
+        if ((*this > criteria) ||
+            (*this == criteria)) { // this node fits, its right son fits, and maybe some on it's left fit
             if (!leftSon) { // nothing to the left, check to the right
                 if (!rightSon) { // this leaf is the only one that fits
                     return this;

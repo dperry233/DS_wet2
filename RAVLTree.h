@@ -455,6 +455,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
                 parent->leftSon = NULL;
             }
             delete tmp;
+            parent->updateNumOfNodes();
             while (parent) {
                 parent->getAndSetHeight();
                 parent->updateBalanceFactor();
@@ -473,6 +474,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
                 parent->setLeftSon(tmp->leftSon);
             }
             delete tmp;
+            parent->updateNumOfNodes();
             while (parent) {
                 parent->getAndSetHeight();
                 parent->updateBalanceFactor();
@@ -483,6 +485,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
             rootNode = tmp->leftSon;
             tmp->leftSon->father = NULL;
             delete tmp;
+            rootNode->updateNumOfNodes();
         }
     } else if (!tmp->leftSon) {
         if (parent) {
@@ -492,6 +495,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
                 parent->setLeftSon(tmp->rightSon);
             }
             delete tmp;
+            parent->updateNumOfNodes();
             while (parent) {
                 parent->getAndSetHeight();
                 parent->updateBalanceFactor();
@@ -502,6 +506,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
             rootNode = tmp->rightSon;
             tmp->rightSon->father = NULL;
             delete tmp;
+            rootNode->updateNumOfNodes();
         }
     } else {
         replace = tmp->rightSon;
@@ -567,6 +572,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
         }
 
         delete tmp;
+        parent->updateNumOfNodes();
         while (parent) {
             parent->getAndSetHeight();
             parent->updateBalanceFactor();
