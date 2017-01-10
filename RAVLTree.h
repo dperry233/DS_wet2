@@ -328,19 +328,6 @@ public:
 
     T * getValue (const Y & iKey);
 
-//    void updateMaxRates (RAVLNode<Y, T> * node);
-//
-//    int calcNodeIndex (RAVLNode<Y, T> * node);
-//
-//    RAVLNode<Y, T> * returnIndexNode (int k);
-//
-//    T * getDataInRank (int k);
-
-//    void inOrderToArray (RAVLNode<Y, T> * nNode, RAVLNode<Y, T> * array, int * i);
-
-//    RAVLNode<Y, T> * getSmallestBiggerThan (RAVLNode<Y, T> * nNode, int max);
-//
-//    RAVLNode<Y, T> * getBiggestSmallerThan (RAVLNode<Y, T> * nNode, int min);
 
     void RprintTree (RAVLNode<Y, T> * nNode) {
         if (!nNode) {
@@ -416,7 +403,7 @@ RTreeResult RAVLTree<Y, T>::insertData (const Y & iKey, T data) {
         }
     }
     tmpNode = newNode;
-    newNode->updateNumOfNodes();
+    newNode->updateSeniority();
     while (tmpNode) { //updating the node ruined path
         tmpNode->getAndSetHeight(); //Updating the height
         tmpNode->updateBalanceFactor();
@@ -455,7 +442,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
                 parent->leftSon = NULL;
             }
             delete tmp;
-            parent->updateNumOfNodes();
+            parent->updateSeniority();
             while (parent) {
                 parent->getAndSetHeight();
                 parent->updateBalanceFactor();
@@ -474,7 +461,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
                 parent->setLeftSon(tmp->leftSon);
             }
             delete tmp;
-            parent->updateNumOfNodes();
+            parent->updateSeniority();
             while (parent) {
                 parent->getAndSetHeight();
                 parent->updateBalanceFactor();
@@ -485,7 +472,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
             rootNode = tmp->leftSon;
             tmp->leftSon->father = NULL;
             delete tmp;
-            rootNode->updateNumOfNodes();
+            rootNode->updateSeniority();
         }
     } else if (!tmp->leftSon) {
         if (parent) {
@@ -495,7 +482,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
                 parent->setLeftSon(tmp->rightSon);
             }
             delete tmp;
-            parent->updateNumOfNodes();
+            parent->updateSeniority();
             while (parent) {
                 parent->getAndSetHeight();
                 parent->updateBalanceFactor();
@@ -506,7 +493,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
             rootNode = tmp->rightSon;
             tmp->rightSon->father = NULL;
             delete tmp;
-            rootNode->updateNumOfNodes();
+            rootNode->updateSeniority();
         }
     } else {
         replace = tmp->rightSon;
@@ -572,7 +559,7 @@ RTreeResult RAVLTree<Y, T>::removeValue (const Y & iKey) {
         }
 
         delete tmp;
-        parent->updateNumOfNodes();
+        parent->updateSeniority();
         while (parent) {
             parent->getAndSetHeight();
             parent->updateBalanceFactor();
@@ -598,147 +585,7 @@ void inOrderToArray (RAVLNode<Y, T> * nNode, T * array, int * i) {
     inOrderToArray(nNode->rightSon, array, i);
 }
 
-//template<class Y, class T>
-//void updateMaxRates (RAVLNode<Y, T> * node) {
-//    if (!node) {
-//        return;
-//    }
-//    if (node->leftSon != NULL) {
-//        node->LeftMaxRate = node->leftSon->maxRating();
-//    }
-//    if (node->rightSon != NULL) {
-//        node->RightMaxRate = node->rightSon->maxRating();
-//    }
-//    RAVLNode<Y, T> * iterator = node;
-//    while (iterator->father != NULL) {
-//        if (iterator == iterator->father->leftSon) {
-//            iterator->father->LeftMaxRate = iterator->maxRating();
-//        } else {
-//            iterator->father->RightMaxRate = iterator->maxRating();
-//        }
-//        iterator = iterator->father;
-//    }
-//}
-//
-//template<class Y, class T>
-//int RAVLTree<Y, T>::calcNodeIndex (RAVLNode<Y, T> * node) {
-//    if (!node) {
-//        return -1;
-//    }
-//    RAVLNode<Y, T> * parent = node->father;
-//    RAVLNode<Y, T> * iter = node;
-//    int index = iter->NumOfNodes - iter->rightNumOfNodes - 1;
-//    while (parent) {
-//        if (parent->rightSon == iter) {
-//            index = index + parent->NumOfNodes - iter->NumOfNodes;
-//        }
-//        iter = parent;
-//        parent = iter->father;
-//    }
-//    return index;
-//};
-//
-//template<class Y, class T>
-//RAVLNode<Y, T> * RAVLTree<Y, T>::returnIndexNode (int k) {
-//
-//    if (k < 0 || !this) {
-//        throw RAVLTREE_INVALID_INPUT;
-//    }
-//    if (k >= this->size) {
-//        throw RAVLTREE_FAILURE;
-//    }
-//    RAVLNode<Y, T> * iter = rootNode;
-//    int currentIndex = calcNodeIndex(iter);
-//    while (iter->leftSon || iter->rightSon) {
-//        if (k == currentIndex) {
-//            return iter;
-//        }
-//        if (k < currentIndex) {
-//            iter = iter->leftSon;
-//            currentIndex = calcNodeIndex(iter);
-//        } else if (k > currentIndex) {
-//            iter = iter->rightSon;
-//            currentIndex = calcNodeIndex(iter);
-//        }
-//    }
-//    return iter;
-//};
-//
-//template<class Y, class T>
-//T * RAVLTree<Y, T>::getDataInRank (int k) {
-//    RAVLNode<Y, T> * node;
-//    try {
-//        node = returnIndexNode(k);
-//    } catch (exception & e) {
-//        return NULL;
-//    }
-//    if (node == NULL) {
-//        return NULL;
-//    }
-//    return &node->value;
-//};
 
-//template<class Y, class T>
-//void RAVLTree<Y, T>::inOrderToArray (RAVLNode<Y, T> * nNode, RAVLNode<Y, T> * array, int * i) {
-//    if (!nNode) {
-//        return;
-//    }
-//    inOrderToArray(nNode->leftSon, array, i);
-//    array[(*i)++] = nNode->value;
-//    inOrderToArray(nNode->rightSon, array, i);
-//}
-
-// if the iter key is greater than the min -than take the index-1
-//else  the iter key is smaller or same -take the index itself
-//template<class Y, class T>
-//RAVLNode<Y, T> * RAVLTree<Y, T>::getBiggestSmallerThan (RAVLNode<Y, T> * nNode, int min) {
-//    if (!nNode) {
-//        return NULL;
-//    }
-//    RAVLNode<Y, T> * iter = nNode;
-//
-//    while (iter->value.strength > min) {
-//        if (!iter->leftSon) {
-//            return iter;
-//        }
-//        iter = iter->leftSon;
-//    }
-//    if (!iter->rightSon) {
-//        return iter;
-//    }
-//	if (iter->value.getStrength() == min){
-//		return iter;
-//	}
-//
-//    iter = iter->rightSon;
-//    return getBiggestSmallerThan(iter, min);
-//};
-
-// if the iter key is greater than the max -than take the index-1
-//else  the iter key is smaller or same -take the index itself
-//template<class Y, class T>
-//RAVLNode<Y, T> * RAVLTree<Y, T>::getSmallestBiggerThan (RAVLNode<Y, T> * nNode, int max) {
-//    if (!nNode) {
-//        return NULL;
-//    }
-//    RAVLNode<Y, T> * iter = nNode;
-//
-//    while (iter->value.strength <= max) {
-//        if (!iter->rightSon) {
-//            return iter;
-//        }
-//        iter = iter->rightSon;
-//    }
-//
-//    if (iter->value.strength == max) {
-//        return iter;
-//    }
-//    if (!iter->leftSon) {
-//        return iter;
-//    }
-//    iter = iter->leftSon;
-//    return getBiggestSmallerThan(iter, max);
-//};
 
 template<class Y, class T>
 T * RAVLTree<Y, T>::findYoungestBiggerThan (int criteria) {

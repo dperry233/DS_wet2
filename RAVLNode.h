@@ -248,43 +248,12 @@ public:
                 }
             }
         }
-//		if (rightSon && leftSon) {
-//			if (leftSon->lowestSeniority <= rightLowest) {
-//				return *leftLowest <= *lowestSeniority ? *leftLowest : *lowestSeniority;
-//
-//			}else{
-//				return *rightLowest <= *lowestSeniority ? *rightLowest : *lowestSeniority;
-//			}
-//		}
-//
-//
-//		if (!rightSon && leftSon) {
-//			return *leftLowest <= *lowestSeniority ? *leftLowest : *lowestSeniority;
-//		}
-//		if (rightSon && !leftSon) {
-//			return *rightLowest < *lowestSeniority ? *rightLowest : *lowestSeniority;
-//		}
+
         return NULL; // shouldn't happen
     };
 
     void setSeniority () {
-//		int currSen,rightSen,leftSen;
-//
-//
-//		if (rightSon && leftSon) {
-//
-//
-//		}
-//		if (!rightSon && leftSon) {
-//
-//			lowestSeniority=this->value;			}
-//		if (rightSon && !leftSon) {
-//
-//			lowestSeniority=rightSon->lowestSeniority+1;			}
-//		if (!rightSon && !leftSon){
-//			*lowestSeniority= &this->value;
-//
-//		}
+
         if (!leftSon && !rightSon) { // this is a leaf
             lowestSeniority = this;
             return;
@@ -332,7 +301,7 @@ public:
         return this->key.getLevel() > criteria;
     }
 
-    void updateNumOfNodes () {
+    void updateSeniority () {
         RAVLNode<Y, T> * iter = this;
 //		iter->setSeniority();
 //		while (iter->father){
