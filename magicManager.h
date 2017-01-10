@@ -61,7 +61,7 @@ public:
         }
         Magi newMagi = Magi(id, MagiLevel);
         allMagiTree->insertData(id, newMagi);
-        //magiIdHash->insert(allMagiTree->getValue(id));
+        magiIdHash->insert(allMagiTree->getValue(id));
         availableMagiTree->insertData(newMagi, newMagi);
         //consider allocation success checks
         return MANAGER_SUCCESS;
@@ -79,9 +79,9 @@ public:
         this->availableMagiTree->removeValue(*allMagiTree->getValue(id));
 
         int index = allMagiTree->getValue(id)->getIndex();
-        if (Magi::unassigned != index) {
+
             magiIdHash->eraseMagi(index);
-        }
+
         allMagiTree->removeValue(id);
 
         return MANAGER_SUCCESS;
