@@ -1,0 +1,10 @@
+Transaction summary:
+Date:	11/1/2017, 01:35:56
+Assignment:	Wet 2
+Course:	234218 (Data Structures 1)
+Semester:	Winter 2016-2017
+Submitted by:	300411659, 300551140
+File name:	4sub.zip
+File size:	583K
+
+Confirmation code:	234218-300645877-4701760
