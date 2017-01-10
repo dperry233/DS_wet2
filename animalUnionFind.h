@@ -40,7 +40,7 @@ public:
 
     void setLevel (int level);
 //
-//    Magi * getOwner () const;//comment
+//    Magi * getOwner () const;
 //
 //    void setOwner (Magi * owner);
 
