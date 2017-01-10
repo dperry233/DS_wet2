@@ -115,7 +115,7 @@ private:
         }
         content = 0;
         for (int i = 0; i < oldSize; ++i) {
-            if (oldArray[i].magi != 0 && !oldArray[i].deleted) insert(oldArray[i].magi);
+            if (oldArray[i].magi && !(oldArray[i].deleted)) insert(oldArray[i].magi);
         }
         delete[] oldArray;
         return HASH_SUCCESS;
@@ -191,7 +191,7 @@ public:
     HashStatus eraseMagi (int index) {
 //        if (index < 0) return HASH_INVALID_INPUT;
 //        int index = findMagi(id);
-        if (Magi::unassigned == index || array[index].magi->getBeast() == Magi::unassigned) return HASH_FAILURE;
+        if (Magi::unassigned == index /* || array[index].magi->getBeast() == Magi::unassigned*/) return HASH_FAILURE;
         array[index].magi->setIndex(Magi::unassigned);
         array[index].magi->setBeast(Magi::unassigned);
         array[index].deleted = true;

@@ -99,7 +99,7 @@ public:
         if (youngest) {
             int youngestId = youngest->getId();
             availableMagiTree->removeValue(*youngest);
-            (allMagiTree->getValue(youngestId))->setBeast(creatureId);
+            allMagiTree->getValue(youngestId)->setBeast(creatureId);
 //            magiIdHash->insert(allMagiTree->getValue(youngestId));
         } else {
             return MANAGER_FAILURE;
@@ -140,8 +140,8 @@ public:
             return MANAGER_FAILURE;
         }
         availableMagiTree->insertData(*currentMagi, *currentMagi);
-        //allMagiTree->getValue(magiId)->setBeast(-1);
-        magiIdHash->eraseMagi(currentMagi->getIndex());
+        allMagiTree->getValue(magiId)->setBeast(-1);
+        //magiIdHash->eraseMagi(currentMagi->getIndex());
 
 
         return MANAGER_SUCCESS;
