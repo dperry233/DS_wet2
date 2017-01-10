@@ -80,7 +80,7 @@ public:
 
         int index = allMagiTree->getValue(id)->getIndex();
 
-            magiIdHash->eraseMagi(index);
+        magiIdHash->eraseMagi(index);
 
         allMagiTree->removeValue(id);
 
